@@ -86,15 +86,15 @@ public class Player : MonoBehaviour
         {
             LevelUP(other.gameObject);
             shootInterval *= 0.8f;
-            //if (shootInterval < 0.2f)
-            //    shootInterval = 0.2f;
+            if (shootInterval < 0.2f)
+                shootInterval = 0.2f;
         }
         else if(other.CompareTag("ATK_Count"))
         {
             LevelUP(other.gameObject);
             bulletCount++;
-            //if (bulletCount > 4) 
-            //    bulletCount = 4;
+            if (bulletCount > 4) 
+                bulletCount = 4;
         }
     }
 
