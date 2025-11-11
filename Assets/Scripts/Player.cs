@@ -6,22 +6,25 @@ public class Player : MonoBehaviour
 {
     public float shootInterval = 0.5f;
     public float speed;
-    public GameObject bulletPrefab;
     public int bulletCount = 1;
     public float bulletSpacing = 0.5f; // ÃÑ¾Ë °£°Ý
+    public ParticleSystem levelUpParticle;
 
     Vector3 startPos;
     Vector3 endPos;
     Rigidbody rb;
     Animator animator;
+    BulletSystem bulletSystem;
 
     List<string> states = new() { "IsIDLE", "IsRun"};
 
     void Start()
     {
+        bulletSystem = GetComponent<BulletSystem>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         StartCoroutine(ShootRoutine());
+        if (rb == null) print("What");
     }
 
     void Update()
@@ -81,13 +84,17 @@ public class Player : MonoBehaviour
     {
         if(other.CompareTag("ATK_Speed"))
         {
+            LevelUP(other.gameObject);
             shootInterval *= 0.8f;
-            if (shootInterval < 0.2f)
-                shootInterval = 0.2f;
+            //if (shootInterval < 0.2f)
+            //    shootInterval = 0.2f;
         }
         else if(other.CompareTag("ATK_Count"))
         {
+            LevelUP(other.gameObject);
             bulletCount++;
+            //if (bulletCount > 4) 
+            //    bulletCount = 4;
         }
     }
 
@@ -106,20 +113,19 @@ public class Player : MonoBehaviour
                 transform.position.z + 1.0f
             );
             
-            var obj = Instantiate(bulletPrefab, spawnPos, Quaternion.identity);
-            Destroy(obj, 3.0f);
+            bulletSystem.MakeBullet(spawnPos);
         }
  
         animator.SetTrigger("Shoot");
+        SoundManager.instance.AudioStart(1);
     }
 
     private IEnumerator ShootRoutine()
     {
-        var wait = new WaitForSeconds(shootInterval);
         while (true)
         {
             Shoot();
-            yield return wait;
+            yield return new WaitForSeconds(shootInterval);
         }
     }
 
@@ -130,5 +136,12 @@ public class Player : MonoBehaviour
             if (state == target) animator.SetBool(state, true);
             else animator.SetBool(state, false);
         }
+    }
+
+    private void LevelUP(GameObject obj)
+    {
+        SoundManager.instance.AudioStart(2);
+        Destroy(obj);
+        levelUpParticle.Play();
     }
 }

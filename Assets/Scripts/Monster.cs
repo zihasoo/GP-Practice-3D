@@ -8,6 +8,7 @@ public class Monster : MonoBehaviour
     public float speed;
     public int HP = 3;
     public Slider HPBar;
+    public GameObject hitParticle;
 
     private bool isDead = false;
     private Rigidbody rb;
@@ -29,10 +30,13 @@ public class Monster : MonoBehaviour
         if (other.gameObject.tag == "Bullet")
         {
             HP--;
+            SoundManager.instance.AudioStart(0);
+            Instantiate(hitParticle, other.gameObject.transform.position, Quaternion.identity);
+
             if (!HPBar.gameObject.activeSelf) 
                 HPBar.gameObject.SetActive(true);
             HPBar.value = HP / 3.0f;
-            Destroy(other.transform.parent.gameObject);
+            other.transform.parent.gameObject.SetActive(false);
             if (!isDead && HP <= 0)
             {
                 isDead = true;
@@ -43,5 +47,4 @@ public class Monster : MonoBehaviour
             }
         }
     }
-
 }

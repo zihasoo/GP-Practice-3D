@@ -1845,6 +1845,7 @@ MonoBehaviour:
   speed: 2.5
   HP: 3
   HPBar: {fileID: 383940811070909710}
+  hitParticle: {fileID: 9085883405347110225, guid: 6b98f888246948245a0f4a31b2ba0454, type: 3}
 --- !u!136 &9193881331206687637
 CapsuleCollider:
   m_ObjectHideFlags: 0
