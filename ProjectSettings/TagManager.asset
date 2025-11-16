@@ -7,6 +7,10 @@ TagManager:
   - Bullet
   - ATK_Count
   - ATK_Speed
+  - FxTemporaire
+  - HP_UP
+  - Move_Speed
+  - Monster
   layers:
   - Default
   - TransparentFX

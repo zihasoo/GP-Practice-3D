@@ -6,23 +6,33 @@ using UnityEngine.UI;
 public class Monster : MonoBehaviour
 {
     public float speed;
-    public int HP = 3;
+    public int maxHP;
+    public int damage;
     public Slider HPBar;
     public GameObject hitParticle;
 
+    private int HP;
     private bool isDead = false;
     private Rigidbody rb;
     private Animator anim;
 
     private void Start()
     {
+        HP = maxHP;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
+
     void Update()
     {
         if (isDead) return;
         rb.velocity = transform.forward * speed;
+
+        if (transform.position.z < -0.5f)
+        {
+            UIManager.instance.player.TakeDamage(damage);
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -35,7 +45,7 @@ public class Monster : MonoBehaviour
 
             if (!HPBar.gameObject.activeSelf) 
                 HPBar.gameObject.SetActive(true);
-            HPBar.value = HP / 3.0f;
+            HPBar.value = (float)HP / maxHP;
             other.transform.parent.gameObject.SetActive(false);
             if (!isDead && HP <= 0)
             {
@@ -44,6 +54,8 @@ public class Monster : MonoBehaviour
                 HPBar.gameObject.SetActive(false);
                 Destroy(rb);
                 GetComponent<CapsuleCollider>().enabled = false;
+                Destroy(gameObject, 4.0f);
+                UIManager.instance.UpdateScore(damage);
             }
         }
     }

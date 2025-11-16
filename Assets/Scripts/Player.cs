@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     public int bulletCount = 1;
     public float bulletSpacing = 0.5f; // 총알 간격
     public ParticleSystem levelUpParticle;
+    public ParticleSystem hitParticle;
+    public int maxHP = 5;
+    public int currentHP;
 
     Vector3 startPos;
     Vector3 endPos;
@@ -20,6 +23,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        currentHP = maxHP;
         bulletSystem = GetComponent<BulletSystem>();
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -62,7 +66,7 @@ public class Player : MonoBehaviour
             ChangeAnimator("IsIDLE");
         }
 
-        // 키보드 입력 처리
+#if UNITY_EDITOR
         if (Input.GetKey(KeyCode.D))
         {
             rb.velocity = new Vector3(speed, rb.velocity.y, rb.velocity.z);
@@ -78,6 +82,7 @@ public class Player : MonoBehaviour
             rb.velocity = new Vector3(0, rb.velocity.y, rb.velocity.z);
             ChangeAnimator("IsIDLE");
         }
+#endif
     }
 
     private void OnTriggerEnter(Collider other)
@@ -95,6 +100,33 @@ public class Player : MonoBehaviour
             bulletCount++;
             if (bulletCount > 4) 
                 bulletCount = 4;
+        }
+        else if(other.CompareTag("Move_Speed"))
+        {
+            LevelUP(other.gameObject);
+            speed += 1f;
+            if (speed > 7f)
+                speed = 7f;
+        }
+        else if(other.CompareTag("HP_UP"))
+        {
+            LevelUP(other.gameObject);
+            maxHP++;
+            currentHP = Mathf.Min(maxHP, currentHP + 2);
+            UIManager.instance.UpdateHP(currentHP, maxHP);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        hitParticle.Play();
+        currentHP -= damage;
+        UIManager.instance.UpdateHP(currentHP, maxHP);
+
+        if (currentHP <= 0)
+        {
+            currentHP = 0;
+            UIManager.instance.HandleGameOver();
         }
     }
 

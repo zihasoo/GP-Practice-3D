@@ -10444,7 +10444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4299112090324767681
 Transform:
   m_ObjectHideFlags: 0
@@ -20362,7 +20362,7 @@ Transform:
   m_GameObject: {fileID: 5639592587693371754}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.07485989, y: 0, z: 0.47}
+  m_LocalPosition: {x: 0, y: 0, z: 0.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -20409,8 +20409,10 @@ MonoBehaviour:
   speed: 3
   bulletCount: 1
   bulletSpacing: 0.2
-  bulletPrefab: {fileID: 3252007397909601008, guid: 8b455274a6478f044bda2fb3def60ebb, type: 3}
   levelUpParticle: {fileID: 8246676088098804852}
+  maxHP: 5
+  currentHP: 0
+  uIManager: {fileID: 0}
 --- !u!54 &4767592357654880136
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -20436,7 +20438,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 120
   m_CollisionDetection: 0
 --- !u!136 &8593621102618557299
 CapsuleCollider:

@@ -6,7 +6,9 @@ using TMPro;
 public enum ItemType
 {
     ATK_Speed,
-    ATK_Count
+    ATK_Count,
+    Move_Speed,
+    HP_UP
 }
 
 public class Item : MonoBehaviour
@@ -20,14 +22,36 @@ public class Item : MonoBehaviour
 
     private void Start()
     {
-        items[0] = (ItemType)Random.Range(0, 2);
-        items[1] = items[0] == ItemType.ATK_Count ? ItemType.ATK_Speed : ItemType.ATK_Count;
+        items[0] = (ItemType)Random.Range(0, 4);
+        
+        do
+        {
+            items[1] = (ItemType)Random.Range(0, 4);
+        }
+        while (items[1] == items[0]);
     
         for(int i = 0; i < cubes.Length; i++)
         {
             cubes[i].GetComponent<Renderer>().material = materials[(int)items[i]];
             cubes[i].tag = items[i].ToString();
-            texts[i].text = items[i] == ItemType.ATK_Count ? "ATACK\nCOUNT" : "ATACK\nSPEED";
+            texts[i].text = GetItemText(items[i]);
+        }
+    }
+
+    string GetItemText(ItemType type)
+    {
+        switch(type)
+        {
+            case ItemType.ATK_Count:
+                return "ATTACK\nCOUNT";
+            case ItemType.ATK_Speed:
+                return "ATTACK\nSPEED";
+            case ItemType.Move_Speed:
+                return "MOVE\nSPEED";
+            case ItemType.HP_UP:
+                return "HP\nUP";
+            default:
+                return "";
         }
     }
 

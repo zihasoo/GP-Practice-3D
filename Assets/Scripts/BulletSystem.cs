@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class BulletSystem : MonoBehaviour
@@ -12,7 +11,7 @@ public class BulletSystem : MonoBehaviour
     int size = 500;
     int idx = 0;
     float clearTime = 3f;
-    private void Start()
+    private void Awake()
     {
         bulletList = new();
         clearQueue = new();

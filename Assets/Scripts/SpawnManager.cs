@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     public GameObject monsterPrefab; 
+    public GameObject monster2Prefab;
     public GameObject itemPrefab; 
 
     void Start()
@@ -19,7 +20,8 @@ public class SpawnManager : MonoBehaviour
         {
             float xPos = Random.Range(-4.5f, 4.5f);
             float zPos = Random.Range(33.5f, 55.5f);
-            Instantiate(monsterPrefab, new Vector3(xPos, 0.05f, zPos), Quaternion.Euler(0, 178.0f, 0));
+            GameObject monsterToSpawn = (Random.value < 0.7f) ? monsterPrefab : monster2Prefab;
+            Instantiate(monsterToSpawn, new Vector3(xPos, 0.05f, zPos), Quaternion.Euler(0, 178.0f, 0));
 
             yield return new WaitForSeconds(Random.Range(1.0f, 3.0f));
 
@@ -28,7 +30,7 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator ItemSpawnCoroutine()
     {
-        var wait = new WaitForSeconds(3.0f);
+        var wait = new WaitForSeconds(6.0f);
 
         while (true)
         {
